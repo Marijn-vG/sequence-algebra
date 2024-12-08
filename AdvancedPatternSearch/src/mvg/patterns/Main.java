@@ -9,17 +9,17 @@ public class Main {
 
     public static void main(String[] args) {
 
-        double[] input_pattern = {2, 4, 6, 9};
-
         double[] pattern = Generator.generateSimpleSequence(
                 (double prev, int n) -> 1*prev + 2*n + 3,
                 1,
                 10);
 
         double[] pattern_2 = Generator.generateExtendedSimpleSequence(
-                (double prev1, double prev2, int n) -> -1*prev1 + 2*prev2 + 2*n + 2,
-                2, 3,
+                (double prev1, double prev2, int n) -> -2*prev1 - 1*prev2 + 0*n + 0,
+                1, -2,
                 50);
+
+        double[] input_pattern = {0, 4, 5, 9, 8};
 
         Sequence active_sequence = new Sequence( input_pattern );
 

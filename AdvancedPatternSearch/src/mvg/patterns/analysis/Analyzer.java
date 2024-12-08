@@ -2,12 +2,16 @@ package mvg.patterns.analysis;
 
 
 public class Analyzer {
+    private static void ensureSequenceLength(double[] numbers, int length){
+        if (numbers.length < length) {
+            throw new IllegalArgumentException("Given sequence is not long enough. Provide at least " + length + " values.");
+        }
+    }
+
     public static float[] getParametersSimpleSequence(Sequence sequence){
         // Return the parameters [t, v, w] for a_(n+1) = t*a_n + v*n + w
 
-        if (sequence.sequence.length < 4) {
-            throw new IllegalArgumentException("Given sequence is not long enough. Provide at least 4 values.");
-        }
+        ensureSequenceLength(sequence.sequence, 4);
 
         Sequence step_1 = sequence.getDifferences();
         if (step_1.isConstant()){
@@ -70,9 +74,7 @@ public class Analyzer {
 
         double[] sec = sequence.sequence;
 
-        if (sec.length < 5) {
-            throw new IllegalArgumentException("Given sequence is not long enough. Provide at least 5 values.");
-        }
+        ensureSequenceLength(sec, 5);
 
         if (sec[1]*sec[1] == sec[2]*sec[0]) {
 
@@ -83,6 +85,8 @@ public class Analyzer {
             return new float[] {(float) (sec[1] / sec[0]), 0, 0, 0};
         }
 
+        ensureSequenceLength(sec, 6);
+
         Sequence step_1 = sequence.getDifferences();
         Sequence step_2 = step_1.getDifferences();
 
@@ -90,6 +94,11 @@ public class Analyzer {
         double[] sec2 = step_2.sequence;
 
         double denominator = sec2[2]*sec2[0] - sec2[1]*sec2[1];
+
+        if (denominator == 0){
+            float[] parameters = getParametersSimpleSequence(sequence);
+            return new float[] {parameters[0], 0, parameters[1], parameters[2]};
+        }
 
         float t = (float) ( (sec2[0]*sec2[3] - sec2[1]*sec2[2]) / denominator );
         float u = (float) ( (sec2[2]*sec2[2] - sec2[1]*sec2[3]) / denominator );
